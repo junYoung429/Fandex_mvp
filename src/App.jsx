@@ -8,6 +8,7 @@ import { adjectives } from "../utils/nameAdjectives"; // 닉네임 랜덤 형용
 import CommentInput from '../comments/commentInput';
 import CommentScroll from '../comments/commentScroll';
 import Vote from '../votes/vote';
+import { initGA, logPageView } from "./utils/analytics";
 
 function App() {
 
@@ -16,7 +17,11 @@ function App() {
   const [currentTargetId, setCurrentTargetId] = useState(null); // 현재 선택된 투표 대상 ID
 
   useEffect(() => {
-    const initializeUser = async () => {
+
+      initGA();
+      logPageView();
+
+      const initializeUser = async () => {
       const SERVICE_NAME = "Fandex"; // 서비스 고유 이름
       const USER_KEY = `${SERVICE_NAME}_userUUID`; // "Fandex_userUUID"
       
