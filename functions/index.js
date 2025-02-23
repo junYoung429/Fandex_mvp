@@ -113,31 +113,28 @@ export const resetVoteInfo = onSchedule(
 export const computeWeightedVotes = onSchedule(
   {
     // 매일 자정(00:00) KST에 실행
-    schedule: "0 0 * * *",
+    schedule: "2 0 * * *",
     timeZone: "Asia/Seoul",
   },
   async (event) => {
     const db = getFirestore();
-    const now = new Date();
-    console.log("⚖️ 가중치 투표 계산 시작:", now.toISOString());
+    // KST 기준의 현재 시간 구하기
+    const nowKST = new Date(new Date().toLocaleString("en-US", { timeZone: "Asia/Seoul" }));
+    console.log("⚖️ 가중치 투표 계산 시작 (KST):", nowKST.toISOString());
 
     try {
-      // 최종 결과를 저장할 객체: { [targetId]: { 응원해요: number, 아쉬워요: number } }
       const sums = {};
 
-      // 0~4일 전까지 반복 (오늘: dayOffset=0, 어제: dayOffset=1, ... 최대 4일 전)
       for (let dayOffset = 0; dayOffset <= 4; dayOffset++) {
-        // 가중치 계산: dayOffset=0 -> 1.0, dayOffset=1 -> 0.8, dayOffset=2 -> 0.6, ...
-        // rawWeight는 부동소수점 계산 결과가 될 수 있으므로, toFixed(1)로 반올림 후 parseFloat로 숫자로 변환
         const rawWeight = 1 - 0.2 * dayOffset;
         const weight = parseFloat(Math.max(rawWeight, 0).toFixed(1));
-        if (weight <= 0) break; // 5일째부터는 0표
+        if (weight <= 0) break;
 
-        // dayOffset일 전 날짜(YYYY-MM-DD) 구하기
+        // KST 기준의 날짜 계산
         const dateObj = new Date(
-          now.getFullYear(),
-          now.getMonth(),
-          now.getDate() - dayOffset
+          nowKST.getFullYear(),
+          nowKST.getMonth(),
+          nowKST.getDate() - dayOffset
         );
         const year = dateObj.getFullYear();
         const month = String(dateObj.getMonth() + 1).padStart(2, "0");
@@ -145,7 +142,6 @@ export const computeWeightedVotes = onSchedule(
         const datePath = `${year}-${month}-${day}`;
         console.log(` - [${datePath}] dayOffset=${dayOffset}, weight=${weight}`);
 
-        // 해당 날짜 컬렉션 votes/{datePath}/votesDocs 가져오기
         const dayCollectionRef = db.collection(`votes/${datePath}/votesDocs`);
         const daySnapshot = await dayCollectionRef.get();
         if (daySnapshot.empty) {
@@ -153,7 +149,6 @@ export const computeWeightedVotes = onSchedule(
           continue;
         }
 
-        // 각 문서별로 targetId와 type에 따라 가중치를 누적
         daySnapshot.forEach((docSnap) => {
           const data = docSnap.data();
           const targetId = data.targetId?.trim();
@@ -171,7 +166,7 @@ export const computeWeightedVotes = onSchedule(
         });
       }
 
-      // sums 객체의 값을 이용해 voteResults/{targetId} 문서의 유효_응원해요, 유효_아쉬워요를 업데이트 (덮어쓰기)
+      // 결과 업데이트 로직은 동일하게 진행
       let batch = db.batch();
       let count = 0;
       const BATCH_SIZE = 500;

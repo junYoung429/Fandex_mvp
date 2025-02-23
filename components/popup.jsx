@@ -80,11 +80,16 @@ function InfoModal({ isOpen, onRequestClose, message }) {
 }
 
 function ProfileModal({ isOpen, onRequestClose, userUUID }) {
-  const [profileImage, setProfileImage] = useState("/default_profile.webp");
-  const [displayName, setDisplayName] = useState("");
+  // 초기 state: localStorage에 저장된 값 사용 (없으면 기본값)
+  const [profileImage, setProfileImage] = useState(
+    () => localStorage.getItem("Fandex_profileImage") || "/default_profile.webp"
+  );
+  const [displayName, setDisplayName] = useState(
+    () => localStorage.getItem("Fandex_userName") || ""
+  );
   const fileInputRef = useRef(null);
 
-  // 모달이 열릴 때마다 localStorage에서 닉네임을 가져와서 state에 반영
+  // 모달이 열릴 때마다 localStorage에 저장된 닉네임을 강제로 state에 반영
   useEffect(() => {
     if (isOpen) {
       const storedName = localStorage.getItem("Fandex_userName") || "";
@@ -103,9 +108,12 @@ function ProfileModal({ isOpen, onRequestClose, userUUID }) {
           const data = userDocSnap.data();
           if (data.profileImage) {
             setProfileImage(data.profileImage);
+            localStorage.setItem("Fandex_profileImage", data.profileImage);
           }
-          if (data.displayName) {
+          // Firestore의 displayName이 존재하고 공백이 아닌 경우에만 업데이트
+          if (data.displayName && data.displayName.trim() !== "") {
             setDisplayName(data.displayName);
+            localStorage.setItem("Fandex_userName", data.displayName);
           }
         }
       } catch (error) {
@@ -122,7 +130,7 @@ function ProfileModal({ isOpen, onRequestClose, userUUID }) {
     }
   };
 
-  // 파일 선택 후 Storage 업로드
+  // 파일 선택 후 Storage 업로드 및 localStorage 업데이트
   const handleFileChange = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -134,7 +142,6 @@ function ProfileModal({ isOpen, onRequestClose, userUUID }) {
       return;
     }
 
-
     try {
       const storageRef = ref(storage, `profileImages/${userUUID}/profile.jpg`);
       await uploadBytes(storageRef, file);
@@ -144,41 +151,41 @@ function ProfileModal({ isOpen, onRequestClose, userUUID }) {
       await setDoc(userDocRef, { profileImage: downloadURL }, { merge: true });
 
       setProfileImage(downloadURL);
+      localStorage.setItem("Fandex_profileImage", downloadURL);
     } catch (error) {
       console.error("프로필 이미지 업로드 중 오류 발생:", error);
     }
   };
 
-  // 프로필 이미지를 기본값으로 되돌리는 함수
+  // 프로필 이미지를 기본값으로 되돌리는 함수 및 localStorage 업데이트
   const handleResetProfileImage = async () => {
     try {
       const defaultUrl = "/default_profile.webp";
-      // Firestore 문서 업데이트
       const userDocRef = doc(db, "users", userUUID);
       await setDoc(userDocRef, { profileImage: defaultUrl }, { merge: true });
-      // 로컬 상태도 업데이트
       setProfileImage(defaultUrl);
+      localStorage.setItem("Fandex_profileImage", defaultUrl);
     } catch (error) {
       console.error("프로필 이미지 기본값 복원 중 오류:", error);
     }
   };
-    // 닉네임 입력값 업데이트 및 특수문자 필터링
-    const handleDisplayNameChange = (e) => {
-      let newName = e.target.value.replace(disallowedRegex, ""); // 특수문자 제거
-      if (disallowedRegex.test(e.target.value)) {
-        alert("입력할 수 없는 특수문자가 포함되어 있습니다."); // 추가된 경고 메시지
-      }
-      setDisplayName(newName);
-    };
 
-  // 닉네임 저장 함수
+  // 닉네임 입력값 업데이트 및 특수문자 필터링, localStorage 즉시 업데이트
+  const handleDisplayNameChange = (e) => {
+    let newName = e.target.value.replace(disallowedRegex, "");
+    if (disallowedRegex.test(e.target.value)) {
+      alert("입력할 수 없는 특수문자가 포함되어 있습니다.");
+    }
+    setDisplayName(newName);
+    localStorage.setItem("Fandex_userName", newName);
+  };
+
+  // 닉네임 저장 (Firestore 업데이트)
   const saveDisplayName = async () => {
     if (!displayName) return;
     try {
       const userDocRef = doc(db, "users", userUUID);
       await setDoc(userDocRef, { displayName }, { merge: true });
-      // localStorage 업데이트
-      localStorage.setItem("Fandex_userName", displayName);
     } catch (error) {
       console.error("디스플레이 이름 업데이트 중 오류 발생:", error);
     }
@@ -252,7 +259,7 @@ function ProfileModal({ isOpen, onRequestClose, userUUID }) {
             <input
               type="text"
               value={displayName}
-              onChange={handleDisplayNameChange} // 🔥 특수문자 제거 적용
+              onChange={handleDisplayNameChange}
               onBlur={saveDisplayName}
               onKeyDown={handleKeyDown}
               maxLength={12} // 12자 제한

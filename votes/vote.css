@@ -76,8 +76,24 @@
 .voteButton.expanded {
     width: 100%; /* 확장 시 전체 너비로 애니메이션 */
     margin-bottom: 64px;
-
+    animation: expandAnimation 0.5s ease-out;
 }
+
+@keyframes expandAnimation {
+    0% {
+        transform: scale(0.95);
+        opacity: 0.8;
+    }
+    50% {
+        transform: scale(1.05);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
 
 .voteButton.expanded.voteButton-like {
     background: #B3CE1F; /* 확장 시 응원해요 색상 */
@@ -124,21 +140,6 @@
     margin-bottom: 24px;
 }
 
-
-@font-face {
-    font-family: 'SUITE Variable';
-    src: url('/fonts/SUITE-Variable.woff2') format('woff2'); 
-    font-weight: 100 900; /* 가변 폰트 지원 */
-    font-style: normal;
-}
-
-@font-face {
-    font-family: 'Futura Bold';
-    src: url('/fonts/Futura Bold font.ttf') format('truetype'); /* 파일 이름과 형식 확인 */
-    font-weight: bold;
-    font-weight: 100 900; /* 가변 폰트 지원 */
-
-}
 
 .alert-container {
     display: flex;

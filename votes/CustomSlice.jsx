@@ -179,8 +179,8 @@ function PieChart({ imageUrl, data, voteData, totalVotes, voteEffect }) {
               <span className="response-text">유효응답수</span>
               <span className="response-count">
                 {expandedSliceIndex === 0
-                  ? voteData["유효_아쉬워요"] || 0
-                  : voteData["유효_응원해요"] || 0}
+                  ? Number(voteData["유효_아쉬워요"] || 0).toFixed(1)
+                  : Number(voteData["유효_응원해요"] || 0).toFixed(1)}
               </span>
             </>
           ) : null}

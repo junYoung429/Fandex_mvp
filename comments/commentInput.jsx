@@ -57,7 +57,7 @@ function CommentInput({ userUUID, refresh, setRefresh, currentTargetId }) {
     setText(newValue);
   };
 
-  const isValidComment = text.length >= 10;
+  const isValidComment = text.length >= 5;
 
   // 최근 1분 내 댓글 수 계산 (밀리초 단위로 저장된 타임스탬프들)
   const recentCount = recentComments.filter(ts => ts > Date.now() - 60000).length;
@@ -162,7 +162,7 @@ function CommentInput({ userUUID, refresh, setRefresh, currentTargetId }) {
           placeholder={
             disabledUntil 
               ? `${disabledCountdown}초 후 댓글 작성 가능` 
-              : "댓글은 10자 이상 200자 이하로 작성해주세요."
+              : "댓글은 5자 이상 200자 이하로 작성해주세요."
           }
           value={text}
           onChange={handleTextChange}
