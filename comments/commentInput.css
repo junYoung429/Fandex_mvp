@@ -1,0 +1,105 @@
+/* 입력 필드와 아이콘을 감싸는 래퍼 */
+.input-wrapper {
+    position: relative; /* 아이콘을 input 내부에 배치할 수 있도록 설정 */
+    display: flex;
+    align-items: flex-start; /* 상단 정렬 */
+    justify-content: space-between; /* 아이콘과 텍스트 간격 유지 */
+
+
+    width: calc(100% - 40px);         /* 좌우 마진 고려하여 부모 너비에 맞춤 */
+    height: 76px; /* 고정 높이 */
+    margin: 0 auto;                  /* 부모 내에서 가운데 정렬 */
+    box-sizing: border-box;
+
+
+    background-color: #414147;
+    padding: 12px 14px;
+    border-radius: 16px;
+    margin-bottom: 16px;
+
+}
+
+textarea::placeholder {
+    color: #939393;   /* 연한 회색 */
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 20px; /* 142.857% */    
+    font-family: 'SUITE Variable', sans-serif;
+    
+}
+
+/* 입력 필드 스타일 */
+.comment {
+    flex: 1; /* 남은 공간을 모두 차지 */
+    border: none;
+    outline: none;
+    background-color: transparent;
+    color: #fff;
+
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 20px; /* 142.857% */    
+    font-family: 'SUITE Variable', sans-serif;
+
+    padding-right: 25px; /* 아이콘과 겹치지 않도록 오른쪽 패딩 추가 */
+
+
+    /* 텍스트 입력 스타일 */
+    overflow-y: auto;  /* 세로 스크롤 활성화 */
+    overflow-x: hidden; /* 가로 스크롤 방지 */
+    white-space: pre-wrap; /* 줄 바꿈 유지 */
+    word-break: break-word; /* 긴 단어가 있을 경우 자동 줄 바꿈 */
+    resize: none; /* 사용자가 크기 조절 못하게 설정 */
+}
+
+/* 폰트 SUIT */
+@font-face {
+    font-family: 'SUITE Variable';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_suit@1.0/SUIT-Regular.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.row {
+    display: flex;
+    justify-content: space-between;
+    width: calc(100% - 40px); /* 좌우 20px씩 여백 적용 */
+    box-sizing: border-box;
+    margin: 0 auto;                  /* 부모 내에서 가운데 정렬 */
+    margin-bottom: 16px;
+    align-items: center;
+  }
+  
+  .left {
+    display: flex;
+    align-items: center;
+    gap: 6px; /* 아이콘과 글자 간격 */
+
+  }
+  
+  .left-text {
+    font-family: 'SUITE Variable', sans-serif;
+    font-size: 24px;
+    font-weight: bold;
+    color: white;
+    font-weight: 900;
+  }
+
+  .right-text{
+    font-family: 'SUITE Variable', sans-serif;
+    font-size: 20px;
+    font-weight: bold;
+    color: white;
+    font-weight: 800;
+  }
+
+@font-face {
+    font-family: 'SUITE Variable';
+    src: url('/fonts/SUITE-Variable.woff2') format('woff2'); 
+    font-weight: 100 900; /* 가변 폰트 지원 */
+    font-style: normal;
+
+}
+

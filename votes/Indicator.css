@@ -1,0 +1,42 @@
+/* 🔹 dots 컨테이너 스타일 */
+.slick-dots {
+    display: flex;
+    justify-content: center;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    gap: 1px;
+    top: -44px !important;          /* 원하는 상단 위치 */
+
+  }
+  
+  /* 🔹 기본 dot 스타일 */
+  .slick-dots li {
+    width: 6px !important;
+    height: 6px !important;
+  
+    border-radius: 2px;
+    border: 2px solid var(--fandex-lightGray, #939393);
+    transition: all 0.3s ease-in-out;
+    cursor: pointer;
+  }
+
+
+  .slick-dots li button {
+    all: unset;       /* 브라우저 기본 스타일 리셋 */
+    appearance: none; /* 일부 브라우저의 기본 appearance 제거 */
+    cursor: pointer;
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+  
+  
+  /* 🔹 활성 dot(막대) 스타일 */
+  .slick-dots li.slick-active {
+    width: 60px !important;
+    height: 6px !important;
+    border-radius: 2px;
+    border: 2px solid var(--fandex-white, #FFF);
+  }
+  

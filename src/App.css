@@ -1,0 +1,69 @@
+/* 기존 스타일 리셋 */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background-color: #101021; /* 예시 배경색 */
+}
+
+.container {
+  width: 100%;
+  max-width: 375px;
+  margin: 0 auto;
+  padding: 0;
+  overflow-x: hidden; /* 혹시 모를 가로 스크롤 방지 */
+  min-height: 100vh;
+}
+
+/* 태블릿 이상 (예: 768px 이상) */
+@media (min-width: 768px) {
+  .container {
+    max-width: 768px;
+  }
+}
+
+/* 데스크탑 이상 (예: 1024px 이상) */
+@media (min-width: 1024px) {
+  .container {
+    max-width: 1024px;
+  }
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 48px;
+}
+
+.logo-text {
+  font-family: 'Futura Bold', sans-serif;
+  font-size: 32px;
+  font-weight: 900;
+  color: white;
+}
+
+.full-width {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+@font-face {
+  font-family: 'SUITE Variable';
+  src: url('/fonts/SUITE-Variable.woff2') format('woff2'); 
+  font-weight: 100 900; /* 가변 폰트 지원 */
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Futura Bold';
+  src: url('/fonts/Futura Bold font.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+}

@@ -1,0 +1,150 @@
+/* 버튼 컨테이너 스타일 */
+.sort-container {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px; /* 버튼 간격 */
+    width: calc(100% - 40px);
+    margin: 0 auto;                  /* 부모 내에서 가운데 정렬 */
+    box-sizing: border-box;  
+}
+  
+  /* 버튼 기본 스타일 */
+  .sort-button {
+    padding: 4px 14px;
+    border: none;
+    border-radius: 16px;
+    background-color: #414147;
+    color: white;
+    font-size: 14px;
+    font-weight: 800;
+    line-height: 20px; /* 142.857% */    
+    font-family: 'SUITE Variable', sans-serif;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+
+  
+  /* 활성화된 버튼 스타일 */
+  .sort-button.active {
+    background-color: #2C9CDB; /* 활성화 시 파란색 */
+    color: black;
+
+  }
+
+/* 댓글 컨테이너 스타일*/
+.comment-container {
+    display: flex;
+    align-items: flex-start;
+    width: calc(100% - 40px);
+    margin: 0 auto;                  /* 부모 내에서 가운데 정렬 */
+    box-sizing: border-box; 
+    margin-top: 8px;
+    color: white;
+
+}
+
+#comment {
+    flex-direction: column; /* 내부 요소들을 세로 방향(column)으로 배치 */
+    align-items: flex-start;
+    box-sizing: border-box; 
+    margin-left: 8px;
+    flex-grow: 1; /* 오른쪽 공간을 가득 채움 */
+
+}
+
+.comment-title {
+    display: flex;
+    align-items: center;
+    width: 100%; /* 부모 너비만큼 차지 */
+    box-sizing: border-box; 
+}
+
+#username {
+    font-family: 'SUITE Variable', sans-serif;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    margin-right:4px;
+
+}
+
+#date-time{
+    font-family: 'SUITE Variable', sans-serif;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    margin-left:4px;
+}
+
+.comment-content{
+    margin-top: 8px;
+    font-family: 'SUITE Variable', sans-serif;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+
+    max-width: 300px;       /* 최대 너비를 300px로 설정 */
+    word-break: break-word; /* 긴 단어도 줄바꿈되도록 설정 */
+    white-space: normal;    /* 기본 줄바꿈 방식 적용 */  
+}
+
+.comment-thumb{
+    display: flex;
+    justify-content: flex-end; /* 내부 요소를 오른쪽 정렬 */
+ 
+    align-items: center;
+    margin-top: 8px;
+    font-family: 'SUITE Variable', sans-serif;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+
+.no-comments{
+    font-family: 'SUITE Variable', sans-serif;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    color: white;
+
+    display: flex;
+    width: calc(100% - 40px);
+    margin: 0 auto;                  /* 부모 내에서 가운데 정렬 */
+    box-sizing: border-box;  
+    justify-content: center;
+
+    margin-top: 72px;
+}
+
+.spacer {
+    display: flex;
+    width: calc(100% - 40px);
+    margin: 0 auto;                  /* 부모 내에서 가운데 정렬 */
+    box-sizing: border-box;  
+    justify-content: center;
+
+    margin-top: 240px;
+}
+
+.loading{
+    font-family: 'SUITE Variable', sans-serif;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    color: white;
+
+    display: flex;
+    width: calc(100% - 40px);
+    margin: 0 auto;                  /* 부모 내에서 가운데 정렬 */
+    box-sizing: border-box;  
+    justify-content: center;
+
+    margin-top: 72px;
+}

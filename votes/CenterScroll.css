@@ -1,0 +1,62 @@
+.circle {
+    width: 200px;
+    height: 220px;
+    border-radius: 50%;
+    overflow: hidden; /* 이미지가 원형에 맞게 잘리도록 설정 */
+    transition: transform 0.3s ease;
+    transform: scale(1); /* 기본 크기를 줄임 */
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+  }
+
+/* 센터 오는 경우 확대 */
+  .slick-center .circle {
+    transform: scale(2); 
+  }
+
+  .slick-arrow.slick-prev:before,
+  .slick-arrow.slick-next:before {
+    content: none !important; /* slick이이 기본 제공하는 화살표 아이콘 제거 */
+  }
+  
+.circle-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* 이미지가 원형에 맞게 잘리도록  */
+}
+
+
+.slider-viewport {
+    position: relative; /* gradient 요소를 절대 배치하기 위해 */
+    width: 100%;
+    max-width: 400px; 
+    margin: 0 auto;
+  }
+  
+  /* 🔹 왼쪽 그라디언트 박스 - 왼쪽에 절대배치*/
+.left-gradient {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%); /* 세로 가운데 정렬 */
+    width: 40px;  /* 폭 */
+    height: 200px; /* 높이 */
+    background: linear-gradient(to right, #101021, transparent);
+    z-index: 2; 
+  }
+  
+  /* 🔹 오른쪽 그라디언트 박스 */
+  .right-gradient {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+    width: 40px;
+    height: 200px;
+    background: linear-gradient(to left, #101021, transparent);
+    z-index: 2;
+  }
+  

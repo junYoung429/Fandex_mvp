@@ -1,0 +1,40 @@
+.logo-overlay {
+    font-family: 'Futura Bold';
+    font-size: 10px;
+    font-style: normal;
+    font-weight: 400;
+  }
+
+  #fandex-score {
+    font-family: 'SUITE Variable';
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 900;
+    color: white;
+  }
+
+  #total-votes {
+    font-family: 'SUITE Variable';
+    font-size: 6px;
+    font-style: normal;
+    font-weight: 600;
+    color: white;
+  }
+
+  .response-text {
+    font-family: 'SUITE Variable';
+    font-size: 6px;
+    font-style: normal;
+    font-weight: 600;
+    color: white;
+    margin-top: 4px;
+    margin-bottom: 2px;
+  }
+
+  .response-count {
+    font-family: 'SUITE Variable';
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 900;
+    color: white;
+  }
