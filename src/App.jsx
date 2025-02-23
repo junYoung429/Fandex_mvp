@@ -8,7 +8,7 @@ import { adjectives } from "../utils/nameAdjectives"; // 닉네임 랜덤 형용
 import CommentInput from '../comments/commentInput';
 import CommentScroll from '../comments/commentScroll';
 import Vote from '../votes/vote';
-import { initGA, logPageView } from "./utils/analytics";
+import { initGA, logPageView } from "../utils/analytics";
 
 function App() {
 

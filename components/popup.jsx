@@ -80,6 +80,9 @@ function InfoModal({ isOpen, onRequestClose, message }) {
 }
 
 function ProfileModal({ isOpen, onRequestClose, userUUID }) {
+  // userUUID가 prop으로 전달되지 않았다면 localStorage에서 읽어오기
+  const effectiveUserUUID = userUUID || localStorage.getItem("Fandex_userUUID");
+
   // 초기 state: localStorage에 저장된 값 사용 (없으면 기본값)
   const [profileImage, setProfileImage] = useState(
     () => localStorage.getItem("Fandex_profileImage") || "/default_profile.webp"
@@ -100,9 +103,16 @@ function ProfileModal({ isOpen, onRequestClose, userUUID }) {
   // Firestore에서 최신 프로필 데이터를 가져옴
   useEffect(() => {
     const fetchProfileData = async () => {
-      if (!userUUID) return;
+      if (!effectiveUserUUID) return;
+      
+      // 이미 변경된 이미지가 localStorage에 있다면 (기본값이 아니라면) Firestore 데이터를 덮어쓰지 않음
+      const localProfile = localStorage.getItem("Fandex_profileImage");
+      if (localProfile && localProfile !== "/default_profile.webp") {
+        return;
+      }
+      
       try {
-        const userDocRef = doc(db, "users", userUUID);
+        const userDocRef = doc(db, "users", effectiveUserUUID);
         const userDocSnap = await getDoc(userDocRef);
         if (userDocSnap.exists()) {
           const data = userDocSnap.data();
@@ -121,7 +131,7 @@ function ProfileModal({ isOpen, onRequestClose, userUUID }) {
       }
     };
     fetchProfileData();
-  }, [userUUID]);
+  }, [effectiveUserUUID]);
 
   // 이미지 클릭 시 파일 선택창 호출
   const handleImageClick = () => {
@@ -134,6 +144,10 @@ function ProfileModal({ isOpen, onRequestClose, userUUID }) {
   const handleFileChange = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
+    if (!effectiveUserUUID) {
+      console.error("User UUID is null. Cannot update profile image.");
+      return;
+    }
 
     // 파일 크기 확인 (3MB = 3 * 1024 * 1024 바이트)
     const maxSize = 3 * 1024 * 1024; // 3MB
@@ -143,11 +157,11 @@ function ProfileModal({ isOpen, onRequestClose, userUUID }) {
     }
 
     try {
-      const storageRef = ref(storage, `profileImages/${userUUID}/profile.jpg`);
+      const storageRef = ref(storage, `profileImages/${effectiveUserUUID}/profile.jpg`);
       await uploadBytes(storageRef, file);
       const downloadURL = await getDownloadURL(storageRef);
 
-      const userDocRef = doc(db, "users", userUUID);
+      const userDocRef = doc(db, "users", effectiveUserUUID);
       await setDoc(userDocRef, { profileImage: downloadURL }, { merge: true });
 
       setProfileImage(downloadURL);
@@ -161,7 +175,7 @@ function ProfileModal({ isOpen, onRequestClose, userUUID }) {
   const handleResetProfileImage = async () => {
     try {
       const defaultUrl = "/default_profile.webp";
-      const userDocRef = doc(db, "users", userUUID);
+      const userDocRef = doc(db, "users", effectiveUserUUID);
       await setDoc(userDocRef, { profileImage: defaultUrl }, { merge: true });
       setProfileImage(defaultUrl);
       localStorage.setItem("Fandex_profileImage", defaultUrl);
@@ -183,8 +197,12 @@ function ProfileModal({ isOpen, onRequestClose, userUUID }) {
   // 닉네임 저장 (Firestore 업데이트)
   const saveDisplayName = async () => {
     if (!displayName) return;
+    if (!effectiveUserUUID) {
+      console.error("User UUID is null. Cannot update displayName.");
+      return;
+    }
     try {
-      const userDocRef = doc(db, "users", userUUID);
+      const userDocRef = doc(db, "users", effectiveUserUUID);
       await setDoc(userDocRef, { displayName }, { merge: true });
     } catch (error) {
       console.error("디스플레이 이름 업데이트 중 오류 발생:", error);
