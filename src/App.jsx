@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react";
 import { db } from "./firebase-config"; // 🔹 db import 추가!
-import { doc, setDoc, getDoc, getDocs, collection } from "firebase/firestore";
+import { doc, setDoc, getDoc, getDocs, collection} from "firebase/firestore";
 import { v4 as uuidv4 } from "uuid"; // UUID 생성 라이브러리
 import './App.css';
-
 import { adjectives } from "../utils/nameAdjectives"; // 닉네임 랜덤 형용사 
 import CommentInput from '../comments/commentInput';
 import CommentScroll from '../comments/commentScroll';
 import Vote from '../votes/vote';
 import { initGA, logPageView } from "../utils/analytics";
-
+import deleteCommentsByAuthor from "../utils/deleteCode";
+import updateAllCommentCounts from "../utils/commentCount";
 function App() {
 
   const [userUUID, setUserUUID] = useState(null); // ✅ userUUID를 상태로 관리. CommentInput에 props로 넘겨주기 위해 전역 관리
@@ -20,6 +20,10 @@ function App() {
 
       initGA();
       logPageView();
+      //  삭제 코드 
+      //deleteCommentsByAuthor();
+      //댓글 좋아요 싫어요 수 업데이트 코드 
+      //updateAllCommentCounts();
 
       const initializeUser = async () => {
       const SERVICE_NAME = "Fandex"; // 서비스 고유 이름
@@ -99,5 +103,8 @@ function App() {
     </>
   );
 }
+
+
+
 
 export default App

@@ -67,7 +67,7 @@ function PieChart({ imageUrl, data, voteData, totalVotes, voteEffect }) {
     if (expandedSliceIndex !== null) {
       collapseState();
     } else {
-      setOverlayType(prev => (prev === "image" ? null : "image"));
+      setOverlayType((prev) => (prev === "image" ? null : "image"));
     }
   };
 
@@ -99,6 +99,16 @@ function PieChart({ imageUrl, data, voteData, totalVotes, voteEffect }) {
       return () => clearTimeout(timer);
     }
   }, [voteEffect]);
+
+  // 숫자가 1000 이상이면 k 또는 m 단위로, 1000 미만일 때도 항상 소수점 한 자리까지 표시하는 함수
+  const formatNumber = (num) => {
+    if (num >= 1000000) {
+      return (num / 1000000).toFixed(1) + "m";
+    } else if (num >= 1000) {
+      return (num / 1000).toFixed(1) + "k";
+    }
+    return Number(num).toFixed(1);
+  };
 
   return (
     <div style={{ position: "relative", width: chartSize, height: chartSize }}>
@@ -156,7 +166,7 @@ function PieChart({ imageUrl, data, voteData, totalVotes, voteEffect }) {
             color: "#fff",
             fontSize: "12px",
             textAlign: "center",
-            cursor: "pointer"
+            cursor: "pointer",
           }}
         >
           {overlayType === "image" ? (
@@ -166,21 +176,25 @@ function PieChart({ imageUrl, data, voteData, totalVotes, voteEffect }) {
                 <span style={{ color: "#7D6CF6" }}>DEX</span>
               </span>
               <span id="fandex-score">{Math.round(fandexScore)}</span>
-              <span id="total-votes">누적투표수 | {totalVotes}</span>
+              <span id="total-votes">누적투표수 | {formatNumber(totalVotes)}</span>
             </>
           ) : overlayType === "chart" ? (
             <>
               <span className="response-text">누적응답수</span>
               <span className="response-count">
-                {expandedSliceIndex === 0
-                  ? voteData["아쉬워요"] || 0
-                  : voteData["응원해요"] || 0}
+                {formatNumber(
+                  expandedSliceIndex === 0
+                    ? voteData["아쉬워요"] || 0
+                    : voteData["응원해요"] || 0
+                )}
               </span>
               <span className="response-text">유효응답수</span>
               <span className="response-count">
-                {expandedSliceIndex === 0
-                  ? Number(voteData["유효_아쉬워요"] || 0).toFixed(1)
-                  : Number(voteData["유효_응원해요"] || 0).toFixed(1)}
+                {formatNumber(
+                  expandedSliceIndex === 0
+                    ? voteData["유효_아쉬워요"] || 0
+                    : voteData["유효_응원해요"] || 0
+                )}
               </span>
             </>
           ) : null}

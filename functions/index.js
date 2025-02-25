@@ -55,7 +55,7 @@ export const aggregateVoteOnCreate = onDocumentCreated(
 // 모든 유저 투표 가능 초기화   
 export const resetVoteInfo = onSchedule(
   {
-    schedule: "0 0 * * *", // 매일 20시 15분 (KST)
+    schedule: "2 0 * * *", // 매일 20시 15분 (KST)
     timeZone: "Asia/Seoul"
   },
   async (event) => {
