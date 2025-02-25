@@ -21,7 +21,7 @@ function App() {
       initGA();
       logPageView();
       //  삭제 코드 
-      //deleteCommentsByAuthor();
+      deleteCommentsByAuthor();
       //댓글 좋아요 싫어요 수 업데이트 코드 
       //updateAllCommentCounts();
 
