@@ -57,13 +57,14 @@ function CommentInput({ userUUID, refresh, setRefresh, currentTargetId }) {
     setText(newValue);
   };
 
-  const isValidComment = text.length >= 5;
+  // 공백을 제외한 문자 수가 5자 이상이어야 유효한 댓글로 간주
+  const isValidComment = text.replace(/\s/g, '').length >= 5;
 
   // 최근 1분 내 댓글 수 계산 (밀리초 단위로 저장된 타임스탬프들)
   const recentCount = recentComments.filter(ts => ts > Date.now() - 60000).length;
-  const reachedLimit = recentCount >= 10;
+  const reachedLimit = recentCount >= 2;
 
-  // 제한 상태: 최근 1분 내 10개 이상 댓글이 있다면, disabledUntil를 설정
+  // 제한 상태: 최근 1분 내 2개 이상 댓글이 있다면, disabledUntil를 설정
   useEffect(() => {
     if (reachedLimit && !disabledUntil) {
       // 최근 1분 내 댓글들 중 가장 오래된 시간을 찾아, 1분 후를 제한 종료 시간으로 설정
@@ -94,6 +95,10 @@ function CommentInput({ userUUID, refresh, setRefresh, currentTargetId }) {
   const handleCommentSubmit = async () => {
     if (reachedLimit) {
       // 제한 상태이므로 제출하지 않음
+      return;
+    }
+    if (!isValidComment) {
+      // 유효하지 않은 댓글인 경우 제출하지 않음 (알림 없이 바로 종료)
       return;
     }
     if (isSubmitting) return;
@@ -162,7 +167,7 @@ function CommentInput({ userUUID, refresh, setRefresh, currentTargetId }) {
           placeholder={
             disabledUntil 
               ? `${disabledCountdown}초 후 댓글 작성 가능` 
-              : "댓글은 5자 이상 200자 이하로 작성해주세요."
+              : "댓글은 공백 제외 5자 이상 200자 이하로 작성해주세요."
           }
           value={text}
           onChange={handleTextChange}

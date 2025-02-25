@@ -4,9 +4,9 @@ import { db } from "../src/firebase-config";
 // 삭제 코드
 export default async function deleteCommentsByDisplayName() {
   // 하드코딩된 displayName
-  const displayName = "친절한 유령"; // 원하는 displayName으로 변경하세요.
+  const displayName = "으스스한 유령"; // 원하는 displayName으로 변경하세요.
   // "voteResults" 컬렉션 내 "윤석열" 문서의 "comments" 하위 컬렉션 참조
-  const commentsRef = collection(db, "voteResults", "윤석열", "comments");
+  const commentsRef = collection(db, "voteResults", "이재명", "comments");
   // 해당 displayName을 가진 문서를 쿼리
   const commentsQuery = query(commentsRef, where("displayName", "==", displayName));
 
